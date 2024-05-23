@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity // говорит что эта сущьность работает с базой данных
 @Table(name = "Products")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,9 +19,9 @@ import java.util.Set;
 public class Products {
 
     @Id
-    @Column(name = "ProductID")
+    @Column(name = "ProductId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long productID;
+    private long productId;
 
     @Column(name = "Name")
     private String name;
@@ -32,8 +32,8 @@ public class Products {
     @Column(name = "Price")
     private double price;
 
-    @Column(name = "CategoryID")
-    private int categoryID;
+//    @Column(name = "CategoryID")
+//    private long categoryID;
 
     @Column(name = "ImageURL")
     private String imageURL;
@@ -47,10 +47,13 @@ public class Products {
     @Column(name = "UpdatedAt")
     private Timestamp updatedAt;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "CategoryID")
-//    private Categories category;
-//
+    @Column(name = "Quantity")
+    private int quantity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CategoryId")
+    private Categories category;
+
 //    @OneToMany(mappedBy = "product")
 //    private Set<OrderItems> orderItem = new HashSet<>();
 //

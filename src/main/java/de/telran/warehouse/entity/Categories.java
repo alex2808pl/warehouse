@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity // говорит что эта сущьность работает с базой данных
 @Table(name = "Categories")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,14 +17,14 @@ import java.util.Set;
 @Setter
 public class Categories {
     @Id
-    @Column(name = "CategoryID") //имя поля в БД
+    @Column(name = "CategoryId") //имя поля в БД
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long categoryID;
+    private long categoryId;
 
     @Column(name = "Name")
     private String name;
 
-//    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-//    private Set<Products> products = new HashSet<>();
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private Set<Products> products = new HashSet<>();
 
 }
