@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity // говорит что эта сущьность работает с базой данных
+@Entity
 @Table(name = "Categories")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,7 +17,7 @@ import java.util.Set;
 @Setter
 public class Categories {
     @Id
-    @Column(name = "CategoryId") //имя поля в БД
+    @Column(name = "CategoryId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long categoryId;
 

@@ -6,11 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity // говорит что эта сущьность работает с базой данных
+@Entity
 @Table(name = "Products")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,16 +31,13 @@ public class Products {
     private String description;
 
     @Column(name = "Price")
-    private double price;
-
-//    @Column(name = "CategoryID")
-//    private long categoryID;
+    private BigDecimal price;
 
     @Column(name = "ImageURL")
     private String imageURL;
 
     @Column(name = "DiscountPrice")
-    private double discountPrice;
+    private BigDecimal discountPrice;
 
     @Column(name = "CreatedAt")
     private Timestamp createdAt;
@@ -53,17 +51,5 @@ public class Products {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CategoryId")
     private Categories category;
-
-//    @OneToMany(mappedBy = "product")
-//    private Set<OrderItems> orderItem = new HashSet<>();
-//
-//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-//    private Set<Favorites> favorites = new HashSet<>();
-//
-//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-//    private Set<OrderItems> orderItems = new HashSet<>();
-//
-//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-//    private Set<CartItems> cartItems = new HashSet<>();
 
 }
