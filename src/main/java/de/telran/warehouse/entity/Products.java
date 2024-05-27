@@ -52,4 +52,7 @@ public class Products {
     @JoinColumn(name = "CategoryId")
     private Categories category;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<Prices> prices = new HashSet<>();
+
 }
