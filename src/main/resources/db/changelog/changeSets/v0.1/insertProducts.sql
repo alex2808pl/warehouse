@@ -1,6 +1,7 @@
 -- liquibase formatted sql
 
 -- changeset serhii:insert_products
+
 INSERT INTO products (Name, Description, Price, CategoryId, ImageURL, DiscountPrice,  CreatedAt, UpdatedAt)
 VALUES
 ('IPA Beer', 'A hoppy IPA beer with citrus flavors.', '6.99', 1, 'https://example.com/images/ipa_beer.jpg', '5.99', NOW(), NOW()),
