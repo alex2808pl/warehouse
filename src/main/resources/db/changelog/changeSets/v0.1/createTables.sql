@@ -3,9 +3,10 @@
 -- changeset serhii:create_table_products
 CREATE TABLE products (CategoryId INT NULL, DiscountPrice DECIMAL NULL, Price DECIMAL NULL,
                        ProductId INT AUTO_INCREMENT NOT NULL, CreatedAt datetime NULL,
-                       UpdatedAt datetime NULL, Description VARCHAR(255) NULL,
+                       UpdatedAt datetime NULL, Quantity INT NULL, Description VARCHAR(255) NULL,
                        ImageURL VARCHAR(255) NULL, Name VARCHAR(255) NULL,
                        CONSTRAINT PK_PRODUCTS PRIMARY KEY (ProductId));
+
 
 -- changeset serhii:create_table_categories
 CREATE TABLE categories (CategoryId INT AUTO_INCREMENT NOT NULL,
