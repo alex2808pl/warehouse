@@ -24,7 +24,6 @@ public class Categories {
     @Column(name = "Name")
     private String name;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private Set<Products> products = new HashSet<>();
-
+//    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+//    private Set<Products> products = new HashSet<>();
 }
