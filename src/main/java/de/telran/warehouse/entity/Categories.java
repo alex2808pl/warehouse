@@ -17,14 +17,13 @@ import java.util.Set;
 @Setter
 public class Categories {
     @Id
-    @Column(name = "CategoryId")
+    @Column(name = "categoryId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long categoryId;
 
-    @Column(name = "Name")
+    @Column(name = "name")
     private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<Products> products = new HashSet<>();
-
 }

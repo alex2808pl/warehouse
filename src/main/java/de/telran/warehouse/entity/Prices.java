@@ -21,19 +21,16 @@ public class Prices {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long priceId;
 
-//    @Column(name = "ProductId")
-//    private long productId;
-
-    @Column(name = "ChangeAt")
+    @Column(name = "changeAt")
     private Timestamp changeAt;
 
-    @Column(name = "Price")
+    @Column(name = "price")
     private BigDecimal price;
 
-    @Column(name = "CreatedAt")
+    @Column(name = "createdAt")
     private Timestamp createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ProductId")
+    @JoinColumn(name = "productId", nullable = false)
     private Products product;
 }

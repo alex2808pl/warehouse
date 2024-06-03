@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -20,39 +21,40 @@ import java.util.Set;
 public class Products {
 
     @Id
-    @Column(name = "ProductId")
+    @Column(name = "productId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long productId;
 
-    @Column(name = "Name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "Description")
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "Price")
+    @Column(name = "price")
     private BigDecimal price;
 
-    @Column(name = "ImageURL")
+    @Column(name = "imageURL")
     private String imageURL;
 
-    @Column(name = "DiscountPrice")
+    @Column(name = "discountPrice")
     private BigDecimal discountPrice;
 
-    @Column(name = "CreatedAt")
+    @CreationTimestamp
+    @Column(name = "createdAt")
     private Timestamp createdAt;
 
-    @Column(name = "UpdatedAt")
+    @CreationTimestamp
+    @Column(name = "updatedAt")
     private Timestamp updatedAt;
 
-    @Column(name = "Quantity")
+    @Column(name = "quantity")
     private int quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CategoryId")
+    @JoinColumn(name = "categoryId")
     private Categories category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<Prices> prices = new HashSet<>();
-
 }

@@ -2,8 +2,6 @@ package de.telran.warehouse.repository;
 
 import de.telran.warehouse.entity.Prices;
 import de.telran.warehouse.entity.Products;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -18,21 +16,13 @@ import java.util.Optional;
 class PricesRepositoriesTest {
 
     @Autowired
-    PricesRepositories pricesRepositoriesTest;
+    PricesRepository pricesRepositoriesTest;
 
     @Autowired
-    ProductsRepositories productsRepositoriesTest;
-
-    @BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
+    ProductsRepository productsRepositoriesTest;
 
     @Test
-    void testGet(){
+    void testGet() {
         Products product = new Products();
         product.setProductId(1L);
 
@@ -55,7 +45,7 @@ class PricesRepositoriesTest {
     }
 
     @Test
-    void testInsert(){
+    void testInsert() {
         Prices newPrices = new Prices();
         newPrices.setPriceId(6L);
         newPrices.setChangeAt(new Timestamp(System.currentTimeMillis()));
@@ -74,7 +64,7 @@ class PricesRepositoriesTest {
     }
 
     @Test
-    void testEdit(){
+    void testEdit() {
         Prices pricesToUpdate = new Prices();
         pricesToUpdate.setChangeAt(new Timestamp(System.currentTimeMillis()));
         pricesToUpdate.setPrice(BigDecimal.valueOf(59.99));
