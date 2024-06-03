@@ -45,14 +45,14 @@ public class Products {
     @Column(name = "UpdatedAt")
     private Timestamp updatedAt;
 
-    @Column(name = "Quantity")
-    private int quantity;
+//    @Column(name = "Quantity")
+//    private int quantity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CategoryId")
-    private Categories category;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private Set<Prices> prices = new HashSet<>();
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "CategoryId")
+//    private Categories category;
+//
+//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+//    private Set<Prices> prices = new HashSet<>();
 
 }
