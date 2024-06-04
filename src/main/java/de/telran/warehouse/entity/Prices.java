@@ -33,7 +33,7 @@ public class Prices {
     @Column(name = "CreatedAt")
     private Timestamp createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ProductId")
-    private Products product;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "ProductId")
+//    private Products product;
 }

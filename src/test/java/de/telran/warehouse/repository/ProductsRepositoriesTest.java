@@ -34,7 +34,6 @@ class ProductsRepositoriesTest {
         assertTrue(findProduct.isPresent());
         assertEquals(testProduct.getName(), findProduct.get().getName());
     }
-
     @Test
     void testEditProduct() {
         Optional<Products> product = productsRepositories.findById(1L);
