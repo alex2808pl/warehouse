@@ -1,61 +1,72 @@
 package de.telran.warehouse.repository;
 
 import de.telran.warehouse.entity.Products;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 @DataJpaTest
 class ProductsRepositoriesTest {
-
     private Products testProducts;
     @Autowired
-    private ProductsRepositories productsRepositories;
+    private ProductsRepository productsRepository;
 
-    @BeforeEach
-    public void setUp(){
-        testProducts = new Products();
-        testProducts.setProductId(2);
-        productsRepositories.save(testProducts);
-    }
-    @AfterEach
-    public void tearDown(){
-        productsRepositories.delete(testProducts);
+    @Test
+    void testGetProduct() {
+        Optional<Products> products = productsRepository.findById(1L);
+        assertTrue(products.isPresent());
+        assertEquals(1L, products.get().getProductId());
     }
 
     @Test
-    void createProduct (){
-        Long testProductId = 2L;
-        Products products = new Products();
-        products.setProductId(testProductId);
-        products.setName("Glenmorangie");
-        products = productsRepositories.save(testProducts);
+    void testInsertProduct() {
+        Products testProduct = new Products();
+        testProduct.setName("testProduct");
+        Products newProduct = productsRepository.save(testProduct);
+        assertNotNull(newProduct);
+        assertTrue(newProduct.getProductId() > 0);
 
-        assertNotNull(products);
-        assertTrue(products.getProductId()>0);
-        assertEquals(products.getProductId(),testProductId);
+        Optional<Products> findProduct = productsRepository.findById(newProduct.getProductId());
+        assertTrue(findProduct.isPresent());
+        assertEquals(testProduct.getName(), findProduct.get().getName());
     }
-    @Test
-    void getProduct (){
-        Products productTest = productsRepositories.findById(2l).orElse(null);
 
-        assertNotNull(productTest);
-        assertEquals(2l, productTest.getProductId());
-    }
     @Test
-    void updateProduct (){
-        Products productsTest = productsRepositories.findById(2L).get();
-        productsTest.setName("Blue Label");
-        Products updatedProduct = productsRepositories.save(productsTest);
+    void testEditProduct() {
+        Optional<Products> product = productsRepository.findById(1L);
+        assertTrue(product.isPresent());
 
-        assertEquals(updatedProduct.getName(),"Blue Label");
+        Products getTestProduct = product.get();
+        assertEquals(1L, getTestProduct.getProductId());
+        getTestProduct.setName("Rom");
+        Products newTestProduct = productsRepository.save(getTestProduct);
+        assertNotNull(newTestProduct);
+        assertEquals(1L, newTestProduct.getProductId());
+
+        Optional<Products> findTestProduct = productsRepository.findById(1L);
+        assertTrue(findTestProduct.isPresent());
+        assertEquals("Rom", findTestProduct.get().getName());
     }
+
     @Test
-    void deletedProduct (){
-        productsRepositories.deleteById(2L);
-        assertNull(productsRepositories.findById(2L).orElse(null));
+    void testDeletedProduct() {
+        Products testProduct = new Products();
+        testProduct.setName("Rom");
+        Products returnTestProduct = productsRepository.save(testProduct);
+        assertNotNull(returnTestProduct);
+        assertTrue(returnTestProduct.getProductId() > 0);
+
+        Optional<Products> findTestProduct = productsRepository.findById(returnTestProduct.getProductId());
+        assertTrue(findTestProduct.isPresent());
+        assertEquals(testProduct.getName(), findTestProduct.get().getName());
+
+        productsRepository.delete(findTestProduct.get());
+
+        Optional<Products> productAfterDelete = productsRepository.findById(returnTestProduct.getProductId());
+        assertFalse(productAfterDelete.isPresent());
     }
 }
