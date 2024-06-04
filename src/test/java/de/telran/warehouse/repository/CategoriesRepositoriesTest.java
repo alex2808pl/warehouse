@@ -1,8 +1,6 @@
 package de.telran.warehouse.repository;
 
 import de.telran.warehouse.entity.Categories;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -16,21 +14,13 @@ import java.util.Optional;
 class CategoriesRepositoriesTest {
 
     @Autowired
-    CategoriesRepositories categoriesRepositoriesTest;
+    CategoriesRepository categoriesRepositoriesTest;
 
     @Autowired
-    ProductsRepositories productsRepositoriesTest;
+    ProductsRepository productsRepositoriesTest;
 
-    @BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
-
-        @Test
-    void testGet(){
+    @Test
+    void testGet() {
         Categories categoriesExpected = new Categories(1L, "Beer", new HashSet<>());
         Optional<Categories> categoriesActual = categoriesRepositoriesTest.findById(1L);
 
@@ -39,7 +29,7 @@ class CategoriesRepositoriesTest {
     }
 
     @Test
-    void testInsert(){
+    void testInsert() {
         Categories newCategory = new Categories();
         newCategory.setName("Vodka");
         newCategory.setProducts(new HashSet<>());
@@ -55,7 +45,7 @@ class CategoriesRepositoriesTest {
     }
 
     @Test
-    void testEdit(){
+    void testEdit() {
         Optional<Categories> categoriesDb = categoriesRepositoriesTest.findById(1L);
         assertTrue(categoriesDb.isPresent());
 
