@@ -57,4 +57,5 @@ public class Products {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<Prices> prices = new HashSet<>();
+
 }
