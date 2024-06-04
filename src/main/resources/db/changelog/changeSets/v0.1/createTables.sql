@@ -7,6 +7,7 @@ CREATE TABLE products (CategoryId INT NULL, DiscountPrice DECIMAL NULL, Price DE
                        ImageURL VARCHAR(255) NULL, Name VARCHAR(255) NULL,
                        CONSTRAINT PK_PRODUCTS PRIMARY KEY (ProductId));
 
+
 -- changeset serhii:create_table_categories
 CREATE TABLE categories (CategoryId INT AUTO_INCREMENT NOT NULL,
                         Name VARCHAR(255) NULL, CONSTRAINT
