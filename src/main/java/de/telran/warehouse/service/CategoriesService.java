@@ -1,7 +1,9 @@
 package de.telran.warehouse.service;
 
+import de.telran.warehouse.config.MapperUtil;
 import de.telran.warehouse.dto.CategoriesDto;
 import de.telran.warehouse.entity.Categories;
+import de.telran.warehouse.mapper.Mappers;
 import de.telran.warehouse.repository.CategoriesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,23 +17,21 @@ import java.util.stream.Collectors;
 public class CategoriesService {
 
     private final CategoriesRepository categoriesRepository;
+    private final Mappers mappers;
 
     public List<CategoriesDto> getCategories() {
         List<Categories> categoriesList = categoriesRepository.findAll();
 
-        return categoriesList.stream()
-                .map(f -> CategoriesDto.builder()
-                        .categoryId(f.getCategoryId())
-                        .name(f.getName())
-                        .build())
-                .collect(Collectors.toList());
+        List<CategoriesDto> categoriesDtoList = MapperUtil.convertList(categoriesList, mappers::convertToCategoriesDto);
+
+        return categoriesDtoList;
     }
 
     public CategoriesDto getCategoriesById(Long id) {
-        Optional<Categories> categories = categoriesRepository.findById(id);
+        Optional<Categories> categoriesOptional = categoriesRepository.findById(id);
         CategoriesDto categoriseDto = null;
-        if (categories.isPresent()) {
-            categoriseDto = new CategoriesDto(categories.get().getCategoryId(), categories.get().getName());
+        if (categoriesOptional.isPresent()) {
+            categoriseDto = categoriesOptional.map(mappers::convertToCategoriesDto).orElse(null);
         }
         return categoriseDto;
     }
@@ -45,25 +45,26 @@ public class CategoriesService {
 
     public CategoriesDto insertCategories(CategoriesDto categoriesDto) {
 
-        Categories newCategory = new Categories();
-        newCategory.setName(categoriesDto.getName());
-
+        Categories newCategory = mappers.convertToCategories(categoriesDto);
+        newCategory.setCategoryId(0);
         Categories savedCategory = categoriesRepository.save(newCategory);
-        return new CategoriesDto(savedCategory.getCategoryId(), savedCategory.getName());
+        return mappers.convertToCategoriesDto(savedCategory);
     }
 
-    public CategoriesDto updateCategories(CategoriesDto categoriseDto) {
-        if (categoriseDto.getCategoryId() <= 0) {
+    public CategoriesDto updateCategories(CategoriesDto categoriesDto) {
+        if (categoriesDto.getCategoryId() <= 0) {
             return null;
         }
-        Optional<Categories> categoriesOptional = categoriesRepository.findById(categoriseDto.getCategoryId());
+
+        Optional<Categories> categoriesOptional = categoriesRepository.findById(categoriesDto.getCategoryId());
         if (!categoriesOptional.isPresent()) {
             return null;
         }
+
         Categories categories = categoriesOptional.get();
-        categories.setName(categoriseDto.getName());
+        categories.setName(categoriesDto.getName());
         Categories savedCategory = categoriesRepository.save(categories);
 
-        return new CategoriesDto(savedCategory.getCategoryId(), savedCategory.getName());
+        return mappers.convertToCategoriesDto(savedCategory);
     }
 }

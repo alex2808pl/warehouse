@@ -47,11 +47,14 @@ class PricesRepositoriesTest {
     @Test
     void testInsert() {
         Prices newPrices = new Prices();
+        Products newProduct = new Products();
+        newProduct.setProductId(1L);
+
         newPrices.setPriceId(6L);
         newPrices.setChangeAt(new Timestamp(System.currentTimeMillis()));
         newPrices.setPrice(BigDecimal.valueOf(19.99));
         newPrices.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        newPrices.setProduct(new Products());
+        newPrices.setProduct(newProduct);
 
         Prices savedPrices = pricesRepositoriesTest.save(newPrices);
 
@@ -65,11 +68,14 @@ class PricesRepositoriesTest {
 
     @Test
     void testEdit() {
+        Products newProduct = new Products();
+        newProduct.setProductId(1L);
+
         Prices pricesToUpdate = new Prices();
         pricesToUpdate.setChangeAt(new Timestamp(System.currentTimeMillis()));
         pricesToUpdate.setPrice(BigDecimal.valueOf(59.99));
         pricesToUpdate.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        pricesToUpdate.setProduct(new Products());
+        pricesToUpdate.setProduct(newProduct);
 
         Prices savedPrices = pricesRepositoriesTest.save(pricesToUpdate);
 
@@ -90,12 +96,14 @@ class PricesRepositoriesTest {
 
     @Test
     void testDelete() {
+        Products newProduct = new Products();
+        newProduct.setProductId(1L);
 
         Prices pricesToDelete = new Prices();
         pricesToDelete.setChangeAt(new Timestamp(System.currentTimeMillis()));
         pricesToDelete.setPrice(BigDecimal.valueOf(19.99));
         pricesToDelete.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        pricesToDelete.setProduct(new Products());
+        pricesToDelete.setProduct(newProduct);
 
         Prices savedPrices = pricesRepositoriesTest.save(pricesToDelete);
         assertNotNull(savedPrices);
