@@ -1,9 +1,11 @@
 package de.telran.warehouse.service;
 
+import de.telran.warehouse.config.MapperUtil;
 import de.telran.warehouse.dto.CategoriesDto;
 import de.telran.warehouse.dto.ProductsDto;
 import de.telran.warehouse.entity.Categories;
 import de.telran.warehouse.entity.Products;
+import de.telran.warehouse.mapper.Mappers;
 import de.telran.warehouse.repository.ProductsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,54 +19,21 @@ import java.util.stream.Collectors;
 public class ProductsService {
 
     private final ProductsRepository productsRepository;
-
-    public ProductsDto toDTO(Products products) {
-        ProductsDto productsDto = new ProductsDto();
-        productsDto.setProductId(products.getProductId());
-        productsDto.setName(products.getName());
-        productsDto.setDescription(products.getDescription());
-        productsDto.setPrice(products.getPrice());
-        productsDto.setImageURL(products.getImageURL());
-        productsDto.setDiscountPrice(products.getDiscountPrice());
-        productsDto.setCreatedAt(products.getCreatedAt());
-        productsDto.setUpdatedAt(products.getUpdatedAt());
-        productsDto.setQuantity(products.getQuantity());
-        productsDto.setCategory(new CategoriesDto(products.getCategory().getCategoryId(),
-                products.getCategory().getName()));
-        return productsDto;
-    }
-
-    public Products toEntity(ProductsDto productsDto) {
-        Products products = new Products();
-        products.setProductId(productsDto.getProductId());
-        products.setName(productsDto.getName());
-        products.setDescription(productsDto.getDescription());
-        products.setPrice(productsDto.getPrice());
-        products.setImageURL(productsDto.getImageURL());
-        products.setDiscountPrice(productsDto.getDiscountPrice());
-        products.setCreatedAt(productsDto.getCreatedAt());
-        products.setUpdatedAt(productsDto.getUpdatedAt());
-        products.setQuantity(productsDto.getQuantity());
-        products.setCategory(new Categories(productsDto.getCategory().getCategoryId(),
-                productsDto.getCategory().getName(), null));
-        return products;
-    }
+    private final Mappers mappers;
 
     public List<ProductsDto> getProducts() {
         List<Products> productsList = productsRepository.findAll();
 
-        return productsList.stream()
-                .map(f -> toDTO(f))
-                .collect(Collectors.toList());
+        List<ProductsDto> productsDtoList = MapperUtil.convertList(productsList, mappers::convertToProductsDto);
+
+        return productsDtoList;
     }
 
     public ProductsDto getProductById(Long id) {
         Optional<Products> productsOptional = productsRepository.findById(id);
-
         ProductsDto productsDto = null;
         if (productsOptional.isPresent()) {
-            Products products = productsOptional.get();
-            productsDto = toDTO(products);
+            productsDto = productsOptional.map(mappers::convertToProductsDto).orElse(null);
         }
         return productsDto;
     }
@@ -77,9 +46,10 @@ public class ProductsService {
     }
 
     public ProductsDto insertProduct(ProductsDto productsDto) {
-        Products newProducts = toEntity(productsDto);
-        productsRepository.save(newProducts);
-        return productsDto;
+        Products newProducts = mappers.convertToProducts(productsDto);
+        newProducts.setProductId(0);
+        Products savedProducts = productsRepository.save(newProducts);
+        return mappers.convertToProductsDto(savedProducts);
     }
 
     public ProductsDto updateProduct(ProductsDto productsDto) {
@@ -90,9 +60,10 @@ public class ProductsService {
         if (!productsOptional.isPresent()) {
             return null;
         }
-        Products products = toEntity(productsDto);
+        Products products = productsOptional.get();
+        products.setName(productsDto.getName());
         Products savedProducts = productsRepository.save(products);
 
-        return toDTO(savedProducts);
+        return mappers.convertToProductsDto(savedProducts);
     }
 }

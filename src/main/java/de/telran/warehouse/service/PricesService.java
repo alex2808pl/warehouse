@@ -22,7 +22,7 @@ public class PricesService {
         pricesDto.setChangeAt(prices.getChangeAt());
         pricesDto.setPrice(prices.getPrice());
         pricesDto.setCreatedAt(prices.getCreatedAt());
-        pricesDto.setProduct(productsService.toDTO(prices.getProduct()));
+      //  pricesDto.setProduct(productsService.toDTO(prices.getProduct()));
         return pricesDto;
     }
 
@@ -32,7 +32,7 @@ public class PricesService {
         prices.setChangeAt(pricesDto.getChangeAt());
         prices.setPrice(pricesDto.getPrice());
         prices.setCreatedAt(pricesDto.getCreatedAt());
-        prices.setProduct(productsService.toEntity(pricesDto.getProduct()));
+      //  prices.setProduct(productsService.toEntity(pricesDto.getProduct()));
         return prices;
     }
 
