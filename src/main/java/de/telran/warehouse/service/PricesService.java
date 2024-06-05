@@ -1,9 +1,12 @@
 package de.telran.warehouse.service;
 
+import de.telran.warehouse.config.MapperUtil;
 import de.telran.warehouse.dto.PricesDto;
 import de.telran.warehouse.entity.Prices;
+import de.telran.warehouse.mapper.Mappers;
 import de.telran.warehouse.repository.PricesRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,42 +17,21 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PricesService {
     private final PricesRepository pricesRepository;
-    private final ProductsService productsService;
+    private final Mappers mappers;
 
-    private PricesDto toDTO(Prices prices) {
-        PricesDto pricesDto = new PricesDto();
-        pricesDto.setPriceId(prices.getPriceId());
-        pricesDto.setChangeAt(prices.getChangeAt());
-        pricesDto.setPrice(prices.getPrice());
-        pricesDto.setCreatedAt(prices.getCreatedAt());
-      //  pricesDto.setProduct(productsService.toDTO(prices.getProduct()));
-        return pricesDto;
-    }
-
-    private Prices toEntity(PricesDto pricesDto) {
-        Prices prices = new Prices();
-        prices.setPriceId(pricesDto.getPriceId());
-        prices.setChangeAt(pricesDto.getChangeAt());
-        prices.setPrice(pricesDto.getPrice());
-        prices.setCreatedAt(pricesDto.getCreatedAt());
-      //  prices.setProduct(productsService.toEntity(pricesDto.getProduct()));
-        return prices;
-    }
 
     public List<PricesDto> getPrices() {
         List<Prices> pricesList = pricesRepository.findAll();
+        List<PricesDto> pricesDtoList = MapperUtil.convertList(pricesList, mappers::convertToPricesDto);
 
-        return pricesList.stream()
-                .map(f -> toDTO(f))
-                .collect(Collectors.toList());
+        return pricesDtoList;
     }
 
     public PricesDto getPricesById(Long id) {
         Optional<Prices> pricesOptional = pricesRepository.findById(id);
         PricesDto pricesDto = null;
         if (pricesOptional.isPresent()) {
-            Prices price = pricesOptional.get();
-            pricesDto = toDTO(price);
+            pricesDto = pricesOptional.map(mappers :: convertToPricesDto).orElse(null);
         }
         return pricesDto;
     }
@@ -62,9 +44,10 @@ public class PricesService {
     }
 
     public PricesDto insertPrice(PricesDto pricesDto) {
-        Prices newPrices = toEntity(pricesDto);
-        pricesRepository.save(newPrices);
-        return pricesDto;
+        Prices newPrices = mappers.converToPrices(pricesDto);
+        newPrices.setPriceId(0);
+        Prices savedPrices = pricesRepository.save(newPrices);
+        return mappers.convertToPricesDto(savedPrices);
     }
 
     public PricesDto updatePrice(PricesDto pricesDto) {
@@ -75,9 +58,10 @@ public class PricesService {
         if (!pricesOptional.isPresent()) {
             return null;
         }
-        Prices prices = toEntity(pricesDto);
+        Prices prices = pricesOptional.get();
+        prices.setPrice(pricesDto.getPrice());
         Prices savedPrices = pricesRepository.save(prices);
 
-        return toDTO(savedPrices);
+        return mappers.convertToPricesDto(savedPrices);
     }
 }
