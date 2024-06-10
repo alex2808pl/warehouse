@@ -40,7 +40,7 @@ public class CategoriesController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public CategoriesDto updateFavorites(@RequestBody CategoriesDto categoriesDto) {
+    public CategoriesDto updateCategories(@RequestBody CategoriesDto categoriesDto) {
         return categoriesService.updateCategories(categoriesDto);
     }
 }
