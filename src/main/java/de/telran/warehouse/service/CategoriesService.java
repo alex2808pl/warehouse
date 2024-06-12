@@ -39,7 +39,7 @@ public class CategoriesService {
     public void deleteCategoriesById(Long id) {
         Optional<Categories> categories = categoriesRepository.findById(id);
         if (categories.isPresent()) {
-            categoriesRepository.delete(categories.get());
+            categoriesRepository.deleteById(id);
         }
     }
 
