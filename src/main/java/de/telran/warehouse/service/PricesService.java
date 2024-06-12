@@ -39,7 +39,7 @@ public class PricesService {
     public void deletePriceById(Long id) {
         Optional<Prices> prices = pricesRepository.findById(id);
         if (prices.isPresent()) {
-            pricesRepository.delete(prices.get());
+            pricesRepository.deleteById(prices.get().getPriceId());
         }
     }
 
